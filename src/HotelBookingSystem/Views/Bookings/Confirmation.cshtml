@@ -1,0 +1,137 @@
+@model BookingConfirmationViewModel
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+<div class="container py-5" style="margin-top: 80px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Success Header -->
+            <div class="text-center mb-4">
+                <div class="confirmation-check mb-3">
+                    <i class="fas fa-check-circle text-success fa-4x"></i>
+                </div>
+                <h1 class="display-6 fw-bold text-success">Booking Confirmed!</h1>
+                <p class="lead text-muted">Your reservation has been successfully created.</p>
+            </div>
+
+            <!-- Booking Reference Card -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-body text-center py-4">
+                    <small class="text-muted text-uppercase">Booking Reference</small>
+                    <h2 class="fw-bold text-gold mb-0 mt-1">@Model.Booking.BookingReference</h2>
+                    <small class="text-muted">Please save this reference for your records</small>
+                </div>
+            </div>
+
+            <!-- Booking Details -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Booking Details</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <!-- Room Info -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-muted text-uppercase small">Room</h6>
+                            <p class="mb-1 fw-bold fs-5">@Model.Room.Name</p>
+                            <p class="text-muted mb-0">Room @Model.Room.RoomNumber &middot; @Model.Room.TypeDisplayName</p>
+                            <p class="text-muted mb-0">@Model.Room.BedTypeDisplayName &middot; Max @Model.Room.MaxOccupancy guests</p>
+                        </div>
+
+                        <!-- Guest Info -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-muted text-uppercase small">Guest</h6>
+                            <p class="mb-1 fw-bold">@Model.Booking.GuestFullName</p>
+                            <p class="text-muted mb-0"><i class="fas fa-envelope me-1"></i>@Model.Booking.GuestEmail</p>
+                            <p class="text-muted mb-0"><i class="fas fa-phone me-1"></i>@Model.Booking.GuestPhone</p>
+                        </div>
+
+                        <!-- Dates -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-muted text-uppercase small">Stay Details</h6>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="me-3 text-center">
+                                    <i class="fas fa-sign-in-alt text-gold fa-lg d-block mb-1"></i>
+                                    <small class="text-muted">Check-In</small>
+                                </div>
+                                <div>
+                                    <strong>@Model.Booking.CheckInDate.ToString("dddd")</strong><br>
+                                    <span>@Model.Booking.CheckInDate.ToString("MMMM dd, yyyy")</span><br>
+                                    <small class="text-muted">From 2:00 PM</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3 text-center">
+                                    <i class="fas fa-sign-out-alt text-gold fa-lg d-block mb-1"></i>
+                                    <small class="text-muted">Check-Out</small>
+                                </div>
+                                <div>
+                                    <strong>@Model.Booking.CheckOutDate.ToString("dddd")</strong><br>
+                                    <span>@Model.Booking.CheckOutDate.ToString("MMMM dd, yyyy")</span><br>
+                                    <small class="text-muted">By 11:00 AM</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Summary -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-muted text-uppercase small">Payment Summary</h6>
+                            <div class="bg-light rounded-3 p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>@Model.Booking.NumberOfNights night@(Model.Booking.NumberOfNights > 1 ? "s" : "") × $@Model.Booking.PricePerNight.ToString("N2")</span>
+                                    <strong>$@Model.Booking.TotalPrice.ToString("N2")</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Guests</span>
+                                    <span>@Model.Booking.NumberOfGuests</span>
+                                </div>
+                                <hr class="my-2">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold fs-5">Total</span>
+                                    <span class="fw-bold fs-5 text-gold">$@Model.Booking.TotalPrice.ToString("N2")</span>
+                                </div>
+                                <small class="text-muted d-block mt-2">Payment at hotel</small>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Booking.SpecialRequests))
+                        {
+                            <div class="col-12">
+                                <h6 class="fw-bold text-muted text-uppercase small">Special Requests</h6>
+                                <p class="text-muted mb-0">@Model.Booking.SpecialRequests</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
+                    <div>
+                        <h6 class="fw-bold mb-1">Booking Status</h6>
+                        <small class="text-muted">Booked on @Model.Booking.BookingDate.ToString("MMMM dd, yyyy 'at' h:mm tt")</small>
+                    </div>
+                    <span class="badge @Model.Booking.StatusBadgeClass fs-6 px-3 py-2">@Model.Booking.Status</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex flex-wrap gap-3 justify-content-center">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-gold btn-lg px-4">
+                    <i class="fas fa-home me-2"></i>Back to Home
+                </a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-controller="Bookings" asp-action="MyBookings" class="btn btn-outline-dark btn-lg px-4">
+                        <i class="fas fa-calendar-alt me-2"></i>My Bookings
+                    </a>
+                }
+                <a asp-controller="Rooms" asp-action="Index" class="btn btn-outline-gold btn-lg px-4">
+                    <i class="fas fa-search me-2"></i>Book Another Room
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

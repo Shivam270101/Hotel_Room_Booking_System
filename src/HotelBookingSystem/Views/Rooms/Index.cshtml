@@ -1,0 +1,174 @@
+@model RoomSearchViewModel
+@{
+    ViewData["Title"] = "Our Rooms";
+}
+
+<div class="container py-4" style="margin-top: 80px;">
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+        <h1 class="display-6 fw-bold">Our <span class="text-gold">Rooms & Suites</span></h1>
+        <p class="text-muted">Find the perfect room for your stay at Grand Horizon Hotel</p>
+    </div>
+
+    <!-- Search & Filter Card -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+            <form method="get" asp-action="Index">
+                <div class="row g-3 align-items-end">
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <label class="form-label small fw-semibold"><i class="fas fa-calendar-alt me-1 text-gold"></i> Check-In</label>
+                        <input type="date" class="form-control" name="checkInDate"
+                               value="@Model.CheckInDate?.ToString("yyyy-MM-dd")"
+                               min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <label class="form-label small fw-semibold"><i class="fas fa-calendar-alt me-1 text-gold"></i> Check-Out</label>
+                        <input type="date" class="form-control" name="checkOutDate"
+                               value="@Model.CheckOutDate?.ToString("yyyy-MM-dd")"
+                               min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <label class="form-label small fw-semibold"><i class="fas fa-bed me-1 text-gold"></i> Room Type</label>
+                        <select class="form-select" name="roomType">
+                            <option value="">All Types</option>
+                            @foreach (RoomType type in Enum.GetValues(typeof(RoomType)))
+                            {
+                                <option value="@((int)type)" selected="@(Model.RoomType == type)">@type</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <label class="form-label small fw-semibold"><i class="fas fa-users me-1 text-gold"></i> Guests</label>
+                        <select class="form-select" name="numberOfGuests">
+                            <option value="">Any</option>
+                            @for (int i = 1; i <= 6; i++)
+                            {
+                                <option value="@i" selected="@(Model.NumberOfGuests == i)">@i+ Guest@(i > 1 ? "s" : "")</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <label class="form-label small fw-semibold"><i class="fas fa-sort me-1 text-gold"></i> Sort By</label>
+                        <select class="form-select" name="sortBy">
+                            <option value="price_asc" selected="@(Model.SortBy == "price_asc")">Price: Low to High</option>
+                            <option value="price_desc" selected="@(Model.SortBy == "price_desc")">Price: High to Low</option>
+                            <option value="name" selected="@(Model.SortBy == "name")">Name</option>
+                            <option value="type" selected="@(Model.SortBy == "type")">Room Type</option>
+                            <option value="size" selected="@(Model.SortBy == "size")">Room Size</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6 d-flex gap-2">
+                        <button type="submit" class="btn btn-gold flex-grow-1">
+                            <i class="fas fa-search me-1"></i> Search
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-redo"></i>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Info -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="text-muted mb-0">
+            <i class="fas fa-door-open me-1"></i>
+            <strong>@Model.TotalRooms</strong> room@(Model.TotalRooms != 1 ? "s" : "") found
+            @if (Model.CheckInDate.HasValue && Model.CheckOutDate.HasValue)
+            {
+                var nights = (Model.CheckOutDate.Value - Model.CheckInDate.Value).Days;
+                <span>for <strong>@nights night@(nights != 1 ? "s" : "")</strong>
+                (@Model.CheckInDate.Value.ToString("MMM dd") - @Model.CheckOutDate.Value.ToString("MMM dd, yyyy"))</span>
+            }
+        </p>
+    </div>
+
+    <!-- Room Cards -->
+    @if (Model.AvailableRooms.Any())
+    {
+        <div class="row g-4">
+            @foreach (var item in Model.AvailableRooms)
+            {
+                var room = item.Room;
+                <div class="col-lg-4 col-md-6">
+                    <div class="card room-card h-100 shadow-sm border-0">
+                        <div class="room-img-wrapper">
+                            <div class="room-img-placeholder">
+                                <i class="fas fa-bed fa-3x text-gold"></i>
+                                <span class="d-block mt-2">@room.TypeDisplayName</span>
+                            </div>
+                            <span class="room-type-badge">@room.TypeDisplayName</span>
+                            @if (item.TotalPrice.HasValue)
+                            {
+                                <span class="room-price-badge">$@item.TotalPrice.Value.ToString("N2") total</span>
+                            }
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title fw-bold mb-0">@room.Name</h5>
+                                <span class="badge bg-dark">Room @room.RoomNumber</span>
+                            </div>
+                            <p class="card-text text-muted small flex-grow-1">
+                                @room.Description.Substring(0, Math.Min(room.Description.Length, 130))@(room.Description.Length > 130 ? "..." : "")
+                            </p>
+
+                            <!-- Room Features -->
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <span class="badge bg-light text-dark border"><i class="fas fa-users me-1"></i>Max @room.MaxOccupancy</span>
+                                <span class="badge bg-light text-dark border"><i class="fas fa-bed me-1"></i>@room.BedTypeDisplayName</span>
+                                <span class="badge bg-light text-dark border"><i class="fas fa-ruler-combined me-1"></i>@room.SizeInSqFt sq ft</span>
+                                <span class="badge bg-light text-dark border"><i class="fas fa-building me-1"></i>Floor @room.FloorNumber</span>
+                            </div>
+
+                            <!-- Amenities Preview -->
+                            @if (room.AmenitiesList.Any())
+                            {
+                                <div class="mb-3">
+                                    @foreach (var amenity in room.AmenitiesList.Take(4))
+                                    {
+                                        <span class="badge bg-gold-light text-gold-dark me-1 mb-1">@amenity</span>
+                                    }
+                                    @if (room.AmenitiesList.Count > 4)
+                                    {
+                                        <span class="badge bg-secondary">+@(room.AmenitiesList.Count - 4) more</span>
+                                    }
+                                </div>
+                            }
+
+                            <!-- Price & CTA -->
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                <div>
+                                    <span class="fs-5 fw-bold text-gold">$@room.PricePerNight</span>
+                                    <span class="text-muted small">/ night</span>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id"
+                                       asp-route-checkIn="@Model.CheckInDate?.ToString("yyyy-MM-dd")"
+                                       asp-route-checkOut="@Model.CheckOutDate?.ToString("yyyy-MM-dd")"
+                                       class="btn btn-outline-gold btn-sm">
+                                        Details
+                                    </a>
+                                    <a asp-controller="Bookings" asp-action="Create" asp-route-roomId="@room.Id"
+                                       asp-route-checkIn="@Model.CheckInDate?.ToString("yyyy-MM-dd")"
+                                       asp-route-checkOut="@Model.CheckOutDate?.ToString("yyyy-MM-dd")"
+                                       class="btn btn-gold btn-sm">
+                                        Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No rooms found</h4>
+            <p class="text-muted">Try adjusting your search criteria or <a asp-action="Index">view all rooms</a>.</p>
+        </div>
+    }
+</div>

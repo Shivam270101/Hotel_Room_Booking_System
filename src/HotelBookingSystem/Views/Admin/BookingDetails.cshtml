@@ -1,0 +1,192 @@
+@model Booking
+@{
+    ViewData["Title"] = "Booking Details - " + Model.BookingReference;
+}
+
+<div class="container py-4" style="margin-top: 80px;">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Bookings">Bookings</a></li>
+            <li class="breadcrumb-item active">@Model.BookingReference</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">
+            <i class="fas fa-file-alt me-2 text-gold"></i>Booking @Model.BookingReference
+        </h2>
+        <span class="badge @Model.StatusBadgeClass fs-6 px-3 py-2">@Model.Status</span>
+    </div>
+
+    <div class="row g-4">
+        <!-- Booking Details -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-user me-2"></i>Guest Information</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="text-muted small">Full Name</label>
+                            <p class="fw-bold mb-0">@Model.GuestFullName</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small">Email</label>
+                            <p class="fw-bold mb-0">@Model.GuestEmail</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small">Phone</label>
+                            <p class="fw-bold mb-0">@Model.GuestPhone</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small">Number of Guests</label>
+                            <p class="fw-bold mb-0">@Model.NumberOfGuests</p>
+                        </div>
+                        @if (Model.User != null)
+                        {
+                            <div class="col-12">
+                                <label class="text-muted small">Registered User</label>
+                                <p class="fw-bold mb-0">
+                                    <i class="fas fa-check-circle text-success me-1"></i>
+                                    @Model.User.FullName (@Model.User.Email)
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-bed me-2"></i>Room & Stay Details</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="text-muted small">Room</label>
+                            <p class="fw-bold mb-0">@Model.Room?.Name (Room @Model.Room?.RoomNumber)</p>
+                            <small class="text-muted">@Model.Room?.TypeDisplayName &middot; @Model.Room?.BedTypeDisplayName</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small">Floor</label>
+                            <p class="fw-bold mb-0">Floor @Model.Room?.FloorNumber</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small">Check-In</label>
+                            <p class="fw-bold mb-0">@Model.CheckInDate.ToString("MMM dd, yyyy")</p>
+                            <small class="text-muted">@Model.CheckInDate.ToString("dddd") — 2:00 PM</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small">Check-Out</label>
+                            <p class="fw-bold mb-0">@Model.CheckOutDate.ToString("MMM dd, yyyy")</p>
+                            <small class="text-muted">@Model.CheckOutDate.ToString("dddd") — 11:00 AM</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small">Duration</label>
+                            <p class="fw-bold mb-0">@Model.NumberOfNights night@(Model.NumberOfNights > 1 ? "s" : "")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.SpecialRequests))
+            {
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white py-3">
+                        <h5 class="mb-0"><i class="fas fa-comment me-2"></i>Special Requests</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <p class="mb-0">@Model.SpecialRequests</p>
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.AdminNotes))
+            {
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-warning text-dark py-3">
+                        <h5 class="mb-0"><i class="fas fa-sticky-note me-2"></i>Admin Notes</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <p class="mb-0">@Model.AdminNotes</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Payment Summary -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-gold text-dark py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-receipt me-2"></i>Payment Summary</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Price per night</span>
+                        <span>$@Model.PricePerNight.ToString("N2")</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Nights</span>
+                        <span>@Model.NumberOfNights</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold fs-5">Total</span>
+                        <span class="fw-bold fs-5 text-gold">$@Model.TotalPrice.ToString("N2")</span>
+                    </div>
+                    <small class="text-muted d-block mt-2">Booked: @Model.BookingDate.ToString("MMM dd, yyyy h:mm tt")</small>
+                </div>
+            </div>
+
+            <!-- Status Management -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Update Status</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="UpdateBookingStatus" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">New Status</label>
+                            <select name="newStatus" class="form-select">
+                                @foreach (BookingStatus status in Enum.GetValues(typeof(BookingStatus)))
+                                {
+                                    <option value="@((int)status)" selected="@(status == Model.Status)">@status</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Admin Notes</label>
+                            <textarea name="adminNotes" class="form-control" rows="2"
+                                      placeholder="Add notes...">@Model.AdminNotes</textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold w-100">
+                            <i class="fas fa-save me-2"></i>Update Status
+                        </button>
+                    </form>
+
+                    @if (Model.CanCancel)
+                    {
+                        <hr>
+                        <form asp-controller="Bookings" asp-action="Cancel" asp-route-id="@Model.Id" method="post"
+                              onsubmit="return confirm('Cancel this booking?');">
+                            <button type="submit" class="btn btn-outline-danger w-100">
+                                <i class="fas fa-times me-2"></i>Cancel Booking
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+
+            <a asp-action="Bookings" class="btn btn-outline-dark w-100">
+                <i class="fas fa-arrow-left me-2"></i>Back to Bookings
+            </a>
+        </div>
+    </div>
+</div>

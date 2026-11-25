@@ -1,0 +1,96 @@
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="container py-5" style="margin-top: 80px;">
+    <div class="text-center mb-5">
+        <h6 class="text-gold text-uppercase fw-bold letter-spacing-1">Get In Touch</h6>
+        <h1 class="display-5 fw-bold">We’d Love to Hear From You</h1>
+        <p class="lead text-muted">Have a question regarding reservations, events, or special requests? Reach out anytime.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Contact Info Cards -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100 p-4">
+                <div class="card-body">
+                    <h4 class="fw-bold mb-4">Hotel Information</h4>
+                    
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="bg-gold-light text-gold p-3 rounded-circle me-3">
+                            <i class="fas fa-map-marker-alt fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Address</h6>
+                            <p class="text-muted mb-0">123 Horizon Blvd, City Center, NY 10001, United States</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="bg-gold-light text-gold p-3 rounded-circle me-3">
+                            <i class="fas fa-phone-alt fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Telephone</h6>
+                            <p class="text-muted mb-0">+1 (555) 123-4567 / +1 (555) 987-6543</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="bg-gold-light text-gold p-3 rounded-circle me-3">
+                            <i class="fas fa-envelope fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Email Support</h6>
+                            <p class="text-muted mb-0">reservations@grandhorizon.com<br>info@grandhorizon.com</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start">
+                        <div class="bg-gold-light text-gold p-3 rounded-circle me-3">
+                            <i class="fas fa-clock fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Front Desk Hours</h6>
+                            <p class="text-muted mb-0">Open 24 Hours / 7 Days a Week</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm p-4">
+                <div class="card-body">
+                    <h4 class="fw-bold mb-4">Send a Message</h4>
+                    <form onsubmit="alert('Thank you for contacting Grand Horizon Hotel! Our concierge team will respond shortly.'); return false;">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Your Name</label>
+                                <input type="text" class="form-control" placeholder="John Doe" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email Address</label>
+                                <input type="email" class="form-control" placeholder="john@example.com" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Subject</label>
+                                <input type="text" class="form-control" placeholder="Booking Inquiry / Special Request" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Message</label>
+                                <textarea class="form-control" rows="5" placeholder="How can we assist you today?" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-gold px-4 py-2">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Inquiry
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

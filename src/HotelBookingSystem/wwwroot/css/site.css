@@ -1,0 +1,436 @@
+/* ============================================================
+   Grand Horizon Hotel - Custom Styles
+   ============================================================ */
+
+/* ----- CSS Variables ----- */
+:root {
+    --gold: #c9a84c;
+    --gold-hover: #b8933a;
+    --gold-light: #f5ecd7;
+    --gold-dark: #8a6d2b;
+    --dark: #1a1a2e;
+    --dark-secondary: #16213e;
+    --body-bg: #f8f9fa;
+}
+
+/* ----- Global ----- */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--body-bg);
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6,
+.display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+.main-content {
+    min-height: calc(100vh - 200px);
+}
+
+/* ----- Gold Theme ----- */
+.text-gold {
+    color: var(--gold) !important;
+}
+
+.bg-gold {
+    background-color: var(--gold) !important;
+}
+
+.bg-gold-light {
+    background-color: var(--gold-light) !important;
+}
+
+.text-gold-dark {
+    color: var(--gold-dark) !important;
+}
+
+.btn-gold {
+    background-color: var(--gold);
+    border-color: var(--gold);
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover,
+.btn-gold:focus {
+    background-color: var(--gold-hover);
+    border-color: var(--gold-hover);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(201, 168, 76, 0.4);
+}
+
+.btn-outline-gold {
+    border-color: var(--gold);
+    color: var(--gold);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover,
+.btn-outline-gold:focus {
+    background-color: var(--gold);
+    border-color: var(--gold);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* ----- Navbar ----- */
+.navbar {
+    background-color: var(--dark) !important;
+    padding: 0.75rem 0;
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    padding: 0.4rem 0;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.brand-text {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--gold) !important;
+}
+
+/* ----- Hero Section ----- */
+.hero-section {
+    position: relative;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 50%, #0f3460 100%);
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23c9a84c" stop-opacity="0.1"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><circle cx="200" cy="150" r="300" fill="url(%23a)"/><circle cx="1000" cy="400" r="250" fill="url(%23a)"/></svg>');
+    background-size: cover;
+    opacity: 0.6;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ----- Quick Search Section ----- */
+.quick-search-section {
+    margin-top: -50px;
+    position: relative;
+    z-index: 10;
+    margin-bottom: 2rem;
+}
+
+.search-card {
+    border-radius: 16px;
+    border: none;
+}
+
+/* ----- Feature Cards ----- */
+.feature-card {
+    border-radius: 12px;
+    background: white;
+    transition: all 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* ----- Room Cards ----- */
+.room-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+.room-img-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.room-img-placeholder {
+    height: 220px;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.room-detail-img .room-img-placeholder {
+    height: 400px;
+}
+
+.room-type-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--gold);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.room-price-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--gold);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* ----- Stat Cards ----- */
+.stat-card {
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-card-admin {
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.stat-card-admin:hover {
+    transform: translateY(-3px);
+}
+
+/* ----- Confirmation Page ----- */
+.confirmation-check {
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ----- Cards & Forms ----- */
+.card {
+    border-radius: 12px;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 0.2rem rgba(201, 168, 76, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: var(--gold);
+    border-color: var(--gold);
+}
+
+/* ----- Tables ----- */
+.table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* ----- Toast Notifications ----- */
+.toast {
+    border-radius: 10px;
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ----- Page Link Gold ----- */
+.page-link {
+    color: var(--gold);
+}
+
+.page-item.active .page-link {
+    background-color: var(--gold);
+    border-color: var(--gold);
+    color: #fff;
+}
+
+/* ----- Progress Bars ----- */
+.progress {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* ----- Footer ----- */
+footer,
+footer .text-muted {
+    color: #fff !important;
+}
+
+footer a:hover {
+    color: var(--gold) !important;
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 70vh;
+    }
+
+    .hero-title {
+        font-size: 2rem !important;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .quick-search-section {
+        margin-top: -30px;
+    }
+
+    .room-img-placeholder {
+        height: 180px;
+    }
+
+    .room-detail-img .room-img-placeholder {
+        height: 250px;
+    }
+
+    .display-6 {
+        font-size: 1.5rem;
+    }
+
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+
+    .stat-card-admin .display-6 {
+        font-size: 1.75rem;
+    }
+
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.4rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 1.75rem !important;
+    }
+
+    .brand-text {
+        font-size: 1.1rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* ----- Utility ----- */
+.sticky-top {
+    z-index: 100;
+}
+
+/* Badge styling for amenities */
+.badge.bg-gold-light {
+    font-weight: 500;
+    font-size: 0.72rem;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+    background: var(--gold-light);
+    color: var(--dark);
+}

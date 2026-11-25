@@ -1,0 +1,235 @@
+@{
+    ViewData["Title"] = "Welcome";
+    var featuredRooms = ViewBag.FeaturedRooms as List<Room> ?? new List<Room>();
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content text-center text-white">
+        <h1 class="display-3 fw-bold mb-3 hero-title">Welcome to <span class="text-gold">Grand Horizon</span></h1>
+        <p class="lead mb-4 hero-subtitle">Experience luxury, comfort, and world-class hospitality</p>
+        <a asp-controller="Rooms" asp-action="Index" class="btn btn-gold btn-lg px-5 py-3">
+            <i class="fas fa-search me-2"></i>Explore Our Rooms
+        </a>
+    </div>
+</section>
+
+<!-- Quick Search Bar -->
+<section class="quick-search-section">
+    <div class="container">
+        <div class="card search-card shadow-lg">
+            <div class="card-body p-4">
+                <form asp-controller="Rooms" asp-action="Index" method="get">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold"><i class="fas fa-calendar-alt me-1 text-gold"></i> Check-In</label>
+                            <input type="date" class="form-control" name="checkInDate"
+                                   min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                                   value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold"><i class="fas fa-calendar-alt me-1 text-gold"></i> Check-Out</label>
+                            <input type="date" class="form-control" name="checkOutDate"
+                                   min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"
+                                   value="@DateTime.Today.AddDays(2).ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold"><i class="fas fa-users me-1 text-gold"></i> Guests</label>
+                            <select class="form-select" name="numberOfGuests">
+                                <option value="1">1 Guest</option>
+                                <option value="2" selected>2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                                <option value="5">5+ Guests</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold"><i class="fas fa-bed me-1 text-gold"></i> Room Type</label>
+                            <select class="form-select" name="roomType">
+                                <option value="">All Types</option>
+                                <option value="0">Standard</option>
+                                <option value="1">Deluxe</option>
+                                <option value="2">Suite</option>
+                                <option value="3">Family</option>
+                                <option value="4">Presidential</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-gold w-100 py-2">
+                                <i class="fas fa-search me-1"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-3 col-6">
+                <div class="feature-card p-4">
+                    <i class="fas fa-concierge-bell fa-2x text-gold mb-3"></i>
+                    <h6 class="fw-bold">24/7 Service</h6>
+                    <p class="text-muted small mb-0">Round-the-clock front desk and room service</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="feature-card p-4">
+                    <i class="fas fa-wifi fa-2x text-gold mb-3"></i>
+                    <h6 class="fw-bold">Free Wi-Fi</h6>
+                    <p class="text-muted small mb-0">High-speed internet throughout the hotel</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="feature-card p-4">
+                    <i class="fas fa-utensils fa-2x text-gold mb-3"></i>
+                    <h6 class="fw-bold">Fine Dining</h6>
+                    <p class="text-muted small mb-0">Award-winning restaurant and bar</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="feature-card p-4">
+                    <i class="fas fa-spa fa-2x text-gold mb-3"></i>
+                    <h6 class="fw-bold">Spa & Wellness</h6>
+                    <p class="text-muted small mb-0">Rejuvenate at our luxury spa center</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Rooms -->
+@if (featuredRooms.Any())
+{
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold">Our <span class="text-gold">Rooms</span></h2>
+                <p class="text-muted">Discover the perfect room for your stay</p>
+            </div>
+            <div class="row g-4">
+                @foreach (var room in featuredRooms.Take(6))
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card room-card h-100 shadow-sm border-0">
+                            <div class="room-img-wrapper">
+                                <div class="room-img-placeholder">
+                                    <i class="fas fa-bed fa-3x text-gold"></i>
+                                    <span class="d-block mt-2">@room.TypeDisplayName</span>
+                                </div>
+                                <span class="room-type-badge">@room.TypeDisplayName</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">@room.Name</h5>
+                                <p class="card-text text-muted small flex-grow-1">@room.Description.Substring(0, Math.Min(room.Description.Length, 120))...</p>
+                                <div class="d-flex flex-wrap gap-1 mb-3">
+                                    <span class="badge bg-light text-dark border"><i class="fas fa-users me-1"></i>@room.MaxOccupancy</span>
+                                    <span class="badge bg-light text-dark border"><i class="fas fa-bed me-1"></i>@room.BedTypeDisplayName</span>
+                                    <span class="badge bg-light text-dark border"><i class="fas fa-ruler-combined me-1"></i>@room.SizeInSqFt sq ft</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="fs-5 fw-bold text-gold">$@room.PricePerNight</span>
+                                        <span class="text-muted small">/ night</span>
+                                    </div>
+                                    <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id"
+                                       class="btn btn-outline-gold btn-sm">
+                                        View Details <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="text-center mt-5">
+                <a asp-controller="Rooms" asp-action="Index" class="btn btn-gold btn-lg px-5">
+                    <i class="fas fa-th-large me-2"></i>View All Rooms
+                </a>
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Why Choose Us -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="display-6 fw-bold mb-3">Why Choose <span class="text-gold">Grand Horizon</span>?</h2>
+                <p class="text-muted mb-4">We combine timeless elegance with modern comfort to create an unforgettable hospitality experience.</p>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-gold me-2 mt-1"></i>
+                            <span>Prime Location</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-gold me-2 mt-1"></i>
+                            <span>Luxury Amenities</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-gold me-2 mt-1"></i>
+                            <span>Best Price Guarantee</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-gold me-2 mt-1"></i>
+                            <span>Free Cancellation</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-gold me-2 mt-1"></i>
+                            <span>Award-Winning Staff</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-gold me-2 mt-1"></i>
+                            <span>Secure Booking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="stat-card text-center p-4 bg-light rounded-3">
+                            <div class="display-5 fw-bold text-gold">10+</div>
+                            <div class="text-muted">Luxury Rooms</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card text-center p-4 bg-light rounded-3">
+                            <div class="display-5 fw-bold text-gold">500+</div>
+                            <div class="text-muted">Happy Guests</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card text-center p-4 bg-light rounded-3">
+                            <div class="display-5 fw-bold text-gold">4.8</div>
+                            <div class="text-muted">Star Rating</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card text-center p-4 bg-light rounded-3">
+                            <div class="display-5 fw-bold text-gold">15+</div>
+                            <div class="text-muted">Years Experience</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

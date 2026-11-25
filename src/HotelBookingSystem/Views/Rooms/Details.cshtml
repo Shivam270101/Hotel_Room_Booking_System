@@ -1,0 +1,236 @@
+@model Room
+@{
+    ViewData["Title"] = Model.Name;
+    var checkIn = ViewBag.CheckIn as DateTime?;
+    var checkOut = ViewBag.CheckOut as DateTime?;
+    var isAvailable = (bool)ViewBag.IsAvailable;
+    var nights = ViewBag.Nights as int?;
+}
+
+<div class="container py-4" style="margin-top: 80px;">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Rooms" asp-action="Index">Rooms</a></li>
+            <li class="breadcrumb-item active">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- Room Image & Info -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="room-detail-img">
+                    <div class="room-img-placeholder" style="height: 400px;">
+                        <i class="fas fa-bed fa-5x text-gold"></i>
+                        <span class="d-block mt-3 fs-4">@Model.TypeDisplayName</span>
+                        <span class="d-block text-muted">Room @Model.RoomNumber</span>
+                    </div>
+                    <span class="room-type-badge fs-6 px-3 py-2">@Model.TypeDisplayName</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h1 class="h2 fw-bold mb-1">@Model.Name</h1>
+                            <span class="text-muted"><i class="fas fa-door-open me-1"></i>Room @Model.RoomNumber &middot; Floor @Model.FloorNumber</span>
+                        </div>
+                        <div class="text-end">
+                            <div class="fs-3 fw-bold text-gold">$@Model.PricePerNight</div>
+                            <span class="text-muted small">per night</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h5 class="fw-bold mb-3">Description</h5>
+                    <p class="text-muted">@Model.Description</p>
+
+                    <!-- Room Features Grid -->
+                    <h5 class="fw-bold mb-3 mt-4">Room Features</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 bg-light rounded-3">
+                                <i class="fas fa-users fa-lg text-gold mb-2 d-block"></i>
+                                <small class="text-muted d-block">Max Guests</small>
+                                <strong>@Model.MaxOccupancy</strong>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 bg-light rounded-3">
+                                <i class="fas fa-bed fa-lg text-gold mb-2 d-block"></i>
+                                <small class="text-muted d-block">Bed Type</small>
+                                <strong>@Model.BedTypeDisplayName</strong>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 bg-light rounded-3">
+                                <i class="fas fa-ruler-combined fa-lg text-gold mb-2 d-block"></i>
+                                <small class="text-muted d-block">Room Size</small>
+                                <strong>@Model.SizeInSqFt sq ft</strong>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 bg-light rounded-3">
+                                <i class="fas fa-building fa-lg text-gold mb-2 d-block"></i>
+                                <small class="text-muted d-block">Floor</small>
+                                <strong>@Model.FloorNumber</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Amenities -->
+                    @if (Model.AmenitiesList.Any())
+                    {
+                        <h5 class="fw-bold mb-3">Amenities</h5>
+                        <div class="row g-2 mb-4">
+                            @foreach (var amenity in Model.AmenitiesList)
+                            {
+                                <div class="col-6 col-md-4">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-gold me-2"></i>
+                                        <span>@amenity</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <!-- Hotel Policies -->
+                    <h5 class="fw-bold mb-3">Hotel Policies</h5>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-sign-in-alt text-gold me-2"></i>
+                                <span>Check-in: <strong>2:00 PM</strong></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-sign-out-alt text-gold me-2"></i>
+                                <span>Check-out: <strong>11:00 AM</strong></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-ban text-gold me-2"></i>
+                                <span>Free cancellation up to <strong>24 hours</strong> before check-in</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-clock text-gold me-2"></i>
+                                <span>Maximum stay: <strong>30 nights</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Sidebar -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm sticky-top" style="top: 100px;">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-calendar-check me-2 text-gold"></i>Book This Room</h5>
+
+                    @if (checkIn.HasValue && checkOut.HasValue)
+                    {
+                        <div class="mb-3">
+                            @if (isAvailable)
+                            {
+                                <div class="alert alert-success mb-3">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <strong>Available!</strong> This room is available for your dates.
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger mb-3">
+                                    <i class="fas fa-times-circle me-2"></i>
+                                    <strong>Not Available</strong> for the selected dates.
+                                </div>
+                            }
+                        </div>
+
+                        <div class="bg-light rounded-3 p-3 mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Check-in</span>
+                                <strong>@checkIn.Value.ToString("MMM dd, yyyy")</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Check-out</span>
+                                <strong>@checkOut.Value.ToString("MMM dd, yyyy")</strong>
+                            </div>
+                            @if (nights.HasValue)
+                            {
+                                <hr class="my-2">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">@nights nights × $@Model.PricePerNight</span>
+                                    <strong>$@((nights.Value * Model.PricePerNight).ToString("N2"))</strong>
+                                </div>
+                                <hr class="my-2">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold">Total</span>
+                                    <span class="fs-5 fw-bold text-gold">$@((nights.Value * Model.PricePerNight).ToString("N2"))</span>
+                                </div>
+                            }
+                        </div>
+
+                        @if (isAvailable)
+                        {
+                            <a asp-controller="Bookings" asp-action="Create"
+                               asp-route-roomId="@Model.Id"
+                               asp-route-checkIn="@checkIn.Value.ToString("yyyy-MM-dd")"
+                               asp-route-checkOut="@checkOut.Value.ToString("yyyy-MM-dd")"
+                               class="btn btn-gold w-100 btn-lg">
+                                <i class="fas fa-book me-2"></i>Book Now
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Rooms" asp-action="Index" class="btn btn-outline-gold w-100">
+                                <i class="fas fa-search me-2"></i>Search Other Rooms
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <form asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.Id" method="get">
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">Check-In Date</label>
+                                <input type="date" class="form-control" name="checkIn"
+                                       min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                                       value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">Check-Out Date</label>
+                                <input type="date" class="form-control" name="checkOut"
+                                       min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"
+                                       value="@DateTime.Today.AddDays(2).ToString("yyyy-MM-dd")" required />
+                            </div>
+                            <button type="submit" class="btn btn-gold w-100 mb-2">
+                                <i class="fas fa-search me-2"></i>Check Availability
+                            </button>
+                        </form>
+
+                        <hr>
+
+                        <a asp-controller="Bookings" asp-action="Create"
+                           asp-route-roomId="@Model.Id"
+                           class="btn btn-outline-gold w-100">
+                            <i class="fas fa-book me-2"></i>Book Now
+                        </a>
+                    }
+
+                    <hr>
+                    <div class="text-muted small">
+                        <p class="mb-1"><i class="fas fa-shield-alt me-1 text-gold"></i> Secure booking</p>
+                        <p class="mb-1"><i class="fas fa-undo me-1 text-gold"></i> Free cancellation (24h)</p>
+                        <p class="mb-0"><i class="fas fa-credit-card me-1 text-gold"></i> Pay at hotel</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

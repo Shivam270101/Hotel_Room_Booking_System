@@ -1,0 +1,110 @@
+@model List<Booking>
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<div class="container py-4" style="margin-top: 80px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0"><i class="fas fa-calendar-alt me-2 text-gold"></i>My Bookings</h2>
+        <a asp-controller="Rooms" asp-action="Index" class="btn btn-gold">
+            <i class="fas fa-plus me-1"></i> Book a Room
+        </a>
+    </div>
+
+    @if (Model.Any())
+    {
+        <!-- Booking Stats -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3 col-6">
+                <div class="card border-0 shadow-sm text-center p-3">
+                    <div class="fs-3 fw-bold text-gold">@Model.Count</div>
+                    <small class="text-muted">Total Bookings</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card border-0 shadow-sm text-center p-3">
+                    <div class="fs-3 fw-bold text-success">@Model.Count(b => b.Status == BookingStatus.Confirmed)</div>
+                    <small class="text-muted">Confirmed</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card border-0 shadow-sm text-center p-3">
+                    <div class="fs-3 fw-bold text-info">@Model.Count(b => b.Status == BookingStatus.CheckedIn)</div>
+                    <small class="text-muted">Active Stay</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card border-0 shadow-sm text-center p-3">
+                    <div class="fs-3 fw-bold text-secondary">@Model.Count(b => b.Status == BookingStatus.CheckedOut)</div>
+                    <small class="text-muted">Completed</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookings List -->
+        @foreach (var booking in Model)
+        {
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-2 text-center mb-3 mb-md-0">
+                            <div class="bg-light rounded-3 p-3">
+                                <div class="text-gold fw-bold fs-5">@booking.CheckInDate.ToString("MMM")</div>
+                                <div class="display-6 fw-bold">@booking.CheckInDate.Day</div>
+                                <small class="text-muted">@booking.CheckInDate.Year</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <h6 class="fw-bold mb-1">@booking.Room?.Name</h6>
+                            <small class="text-muted d-block">Room @booking.Room?.RoomNumber &middot; @booking.Room?.TypeDisplayName</small>
+                            <small class="text-muted d-block mt-1">
+                                <i class="fas fa-calendar me-1"></i>@booking.CheckInDate.ToString("MMM dd") - @booking.CheckOutDate.ToString("MMM dd, yyyy")
+                                (@booking.NumberOfNights nights)
+                            </small>
+                            <small class="text-muted d-block">
+                                <i class="fas fa-users me-1"></i>@booking.NumberOfGuests guest@(booking.NumberOfGuests > 1 ? "s" : "")
+                            </small>
+                        </div>
+                        <div class="col-md-2 text-md-center mb-3 mb-md-0">
+                            <small class="text-muted d-block">Reference</small>
+                            <span class="fw-bold small">@booking.BookingReference</span>
+                        </div>
+                        <div class="col-md-2 text-md-center mb-3 mb-md-0">
+                            <small class="text-muted d-block">Total</small>
+                            <span class="fw-bold text-gold">$@booking.TotalPrice.ToString("N2")</span>
+                        </div>
+                        <div class="col-md-2 text-md-end">
+                            <span class="badge @booking.StatusBadgeClass mb-2 d-inline-block">@booking.Status</span>
+                            <div class="d-flex gap-2 justify-content-md-end">
+                                <a asp-action="Confirmation" asp-route-id="@booking.Id"
+                                   class="btn btn-outline-dark btn-sm">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                @if (booking.CanCancel)
+                                {
+                                    <form asp-action="Cancel" asp-route-id="@booking.Id" method="post"
+                                          onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No bookings yet</h4>
+            <p class="text-muted mb-4">Start exploring our rooms and make your first reservation!</p>
+            <a asp-controller="Rooms" asp-action="Index" class="btn btn-gold btn-lg px-5">
+                <i class="fas fa-search me-2"></i>Browse Rooms
+            </a>
+        </div>
+    }
+</div>
