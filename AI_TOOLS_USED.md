@@ -4,7 +4,7 @@
 
 | Tool | Purpose |
 |------|---------|
-| **Google Gemini (Antigravity)** | Primary AI assistant used for generating the complete project structure, all source code files (models, controllers, views, CSS, JS), database scripts, and documentation. Used for architectural decisions, code generation, and project scaffolding. |
+| **Google Gemini (Antigravity)**, **GitHub Copilot** | Primary AI assistant used for generating the complete project structure, all source code files (models, controllers, views, CSS, JS), database scripts, and documentation. Used for architectural decisions, code generation, and project scaffolding. |
 
 ## How AI Was Used
 
