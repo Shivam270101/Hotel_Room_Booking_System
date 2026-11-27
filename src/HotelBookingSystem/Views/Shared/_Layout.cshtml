@@ -35,6 +35,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="About">
+                            <i class="fas fa-circle-info me-1"></i> About Us
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" asp-controller="Bookings" asp-action="Lookup">
                             <i class="fas fa-search me-1"></i> Find Booking
                         </a>
@@ -110,6 +115,7 @@
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="/" class="text-muted text-decoration-none">Home</a></li>
                         <li class="mb-2"><a asp-controller="Rooms" asp-action="Index" class="text-muted text-decoration-none">Our Rooms</a></li>
+                        <li class="mb-2"><a asp-controller="Home" asp-action="About" class="text-muted text-decoration-none">About Us</a></li>
                         <li class="mb-2"><a asp-controller="Bookings" asp-action="Lookup" class="text-muted text-decoration-none">Find Booking</a></li>
                     </ul>
                 </div>

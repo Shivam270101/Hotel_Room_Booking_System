@@ -221,19 +221,24 @@
 
     <!-- Quick Actions -->
     <div class="row g-3 mt-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <a asp-action="Rooms" class="btn btn-outline-dark w-100 p-3">
                 <i class="fas fa-door-open me-2"></i>Manage Rooms
             </a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <a asp-action="Bookings" class="btn btn-outline-dark w-100 p-3">
                 <i class="fas fa-calendar-check me-2"></i>Manage Bookings
             </a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <a asp-action="CreateRoom" class="btn btn-gold w-100 p-3">
                 <i class="fas fa-plus me-2"></i>Add New Room
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-controller="Home" asp-action="About" class="btn btn-outline-dark w-100 p-3">
+                <i class="fas fa-circle-info me-2"></i>About Us
             </a>
         </div>
     </div>
